@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "baseUrl": "./src",
+    "paths": {}
+  },
+  "include": ["src", "env.d.ts"],
+  "references": []
+}
