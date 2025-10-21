@@ -1,0 +1,25 @@
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+    map $host $blocked_host {
+        default         1;
+        api.example.com 0;
+        another.com     0;
+    }
+
+    server {
+        listen 80 default_server;
+        return 444;
+    }
+
+    include conf/sites/*.conf;
+}

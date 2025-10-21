@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.pnpm-store/
+.vscode/
+apps/*/dist/
+apps/*/.env
+scripts/totp-setup.png
+data/

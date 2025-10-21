@@ -1,0 +1,17 @@
+{
+  "name": "decomind",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=apps/web-h5 && npm run build --workspace=apps/admin && npm run build --workspace=apps/api",
+    "lint": "echo 'No lint configured'",
+    "test": "npm run test --workspace=apps/api"
+  },
+  "dependencies": {
+    "argon2": "^0.40.3"
+  }
+}
