@@ -1,0 +1,22 @@
+{
+  "name": "decomind",
+  "private": true,
+  "version": "0.1.0",
+  "description": "分解力 Monorepo",
+  "scripts": {
+    "build": "npm run build -w apps/api && npm run build -w apps/web-h5 && npm run build -w apps/admin",
+    "dev:api": "npm run dev -w apps/api",
+    "dev:web": "npm run dev -w apps/web-h5",
+    "dev:admin": "npm run dev -w apps/admin"
+  },
+  "workspaces": [
+    "apps/web-h5",
+    "apps/api",
+    "apps/admin",
+    "packages/shared-schemas",
+    "packages/shared-utils"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
