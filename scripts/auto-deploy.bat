@@ -9,6 +9,8 @@ if not exist node_modules (
 
 powershell -ExecutionPolicy Bypass -File "%~dp0install-node.ps1" || goto :error
 powershell -ExecutionPolicy Bypass -File "%~dp0install-pm2.ps1" || goto :error
+echo [npm] Ensuring root dependencies for tooling...
+call npm install || goto :error
 powershell -ExecutionPolicy Bypass -File "%~dp0gen-env.ps1" || goto :error
 if exist "%~dp0deploy-vars.cmd" call "%~dp0deploy-vars.cmd"
 
@@ -18,8 +20,6 @@ for %%D in ("apps\\api" "apps\\admin" "apps\\web-h5" "packages\\shared-schemas" 
     call npm install --prefix %%D || goto :error
   )
 )
-
-call npm install || goto :error
 
 for %%D in ("apps\\web-h5" "apps\\admin" "apps\\api") do (
   if exist %%D\package.json (

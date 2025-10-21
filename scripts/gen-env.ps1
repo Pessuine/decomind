@@ -19,12 +19,21 @@ $QWEN_API_KEY = Read-Value 'Qwen API Key' ''
 if (-not $QWEN_API_KEY) { throw 'Qwen API Key is required.' }
 $MODEL_NAME = Read-Value 'Model name' 'qwen-max'
 $ADMIN_PASSWORD = Read-Host 'Initial admin password' -AsSecureString
-$AdminPasswordPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($ADMIN_PASSWORD))
+$bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($ADMIN_PASSWORD)
+try {
+  $AdminPasswordPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+} finally {
+  [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+}
 
-Write-Host '[secrets] Generating Argon2 hash via npx argon2-cli...'
-$hashOutput = npx.cmd --yes argon2-cli "$AdminPasswordPlain"
-$AdminPasswordHash = ($hashOutput | Select-String -Pattern '^\$argon2').Line
-if (-not $AdminPasswordHash) { throw 'Failed to compute Argon2 hash.' }
+Write-Host '[secrets] Generating Argon2 hash via Node script...'
+$hashOutput = node.exe "$PSScriptRoot\\hash-password.cjs" "$AdminPasswordPlain" 2>&1
+if ($LASTEXITCODE -ne 0) {
+  throw "Failed to compute Argon2 hash: $hashOutput"
+}
+$AdminPasswordHash = $hashOutput.Trim()
+if (-not $AdminPasswordHash -or -not $AdminPasswordHash.StartsWith('$argon2')) { throw 'Failed to compute Argon2 hash.' }
+$AdminPasswordPlain = $null
 
 function New-Base32Secret($bytesLength) {
   $bytes = New-Object byte[] $bytesLength
