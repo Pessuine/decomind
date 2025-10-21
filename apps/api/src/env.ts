@@ -26,6 +26,5 @@ export const ENV = {
   MAX_TOKENS: Number(process.env.MAX_TOKENS ?? 256),
   DB_PATH: requireEnv('DB_PATH', '../data/app.db'),
   ADMIN_PASSWORD_HASH: requireEnv('ADMIN_PASSWORD_HASH'),
-  TOTP_SECRET: requireEnv('TOTP_SECRET'),
   CONFIG_SECRET: process.env.CONFIG_SECRET ?? requireEnv('ADMIN_PASSWORD_HASH'),
 };

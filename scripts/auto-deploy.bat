@@ -37,7 +37,6 @@ pm2 delete decompo-admin >NUL 2>&1
 pm2 start apps\api\dist\index.cjs --name decompo-api || goto :error
 pm2 start node --name decompo-admin -- apps\admin\server.cjs || goto :error
 pm2 save || goto :error
-pm2 startup || goto :error
 
 echo.
 echo Deployment complete.

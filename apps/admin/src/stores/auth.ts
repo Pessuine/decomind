@@ -3,7 +3,6 @@ import api from '../lib/api';
 
 interface LoginPayload {
   password: string;
-  totp: string;
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -21,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
         this.token = res.data.data.token;
         localStorage.setItem('admin_token', this.token);
       } catch (err) {
-        this.error = '登录失败，请检查口令与验证码';
+        this.error = '登录失败，请检查口令';
         throw err;
       } finally {
         this.loading = false;

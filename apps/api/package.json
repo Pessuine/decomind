@@ -22,8 +22,7 @@
     "fastify-type-provider-zod": "^4.0.1",
     "node-cache": "^5.1.2",
     "openai": "^4.47.1",
-    "pino": "^9.0.0",
-    "speakeasy": "^2.0.0"
+    "pino": "^9.0.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.9",

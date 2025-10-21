@@ -35,37 +35,6 @@ $AdminPasswordHash = $hashOutput.Trim()
 if (-not $AdminPasswordHash -or -not $AdminPasswordHash.StartsWith('$argon2')) { throw 'Failed to compute Argon2 hash.' }
 $AdminPasswordPlain = $null
 
-function New-Base32Secret($bytesLength) {
-  $bytes = New-Object byte[] $bytesLength
-  (New-Object System.Security.Cryptography.RNGCryptoServiceProvider).GetBytes($bytes)
-  $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
-  $builder = New-Object System.Text.StringBuilder
-  $buffer = 0
-  $bitsLeft = 0
-  foreach ($b in $bytes) {
-    $buffer = ($buffer -shl 8) -bor $b
-    $bitsLeft += 8
-    while ($bitsLeft -ge 5) {
-      $bitsLeft -= 5
-      $index = ($buffer -shr $bitsLeft) -band 31
-      [void]$builder.Append($alphabet[$index])
-    }
-  }
-  if ($bitsLeft -gt 0) {
-    $index = ($buffer -shl (5 - $bitsLeft)) -band 31
-    [void]$builder.Append($alphabet[$index])
-  }
-  return $builder.ToString()
-}
-
-$TOTP_SECRET = New-Base32Secret 20
-$Issuer = 'Decomind Admin'
-$OtpUrl = "otpauth://totp/$([Uri]::EscapeDataString($Issuer)):$([Uri]::EscapeDataString('admin@' + $ADMIN_DOMAIN))?secret=$TOTP_SECRET&issuer=$([Uri]::EscapeDataString($Issuer))&digits=6&period=30"
-
-Write-Host '[totp] Writing QR code to scripts/totp-setup.png'
-$qrPath = Join-Path $PSScriptRoot 'totp-setup.png'
-npx.cmd --yes qrcode "$OtpUrl" -o "$qrPath"
-
 $apiEnv = @(
   "NODE_ENV=production",
   "PORT=$API_PORT",
@@ -79,8 +48,7 @@ $apiEnv = @(
   "TEMPERATURE=0.6",
   "MAX_TOKENS=256",
   "DB_PATH=../data/app.db",
-  "ADMIN_PASSWORD_HASH=$AdminPasswordHash",
-  "TOTP_SECRET=$TOTP_SECRET"
+  "ADMIN_PASSWORD_HASH=$AdminPasswordHash"
 )
 $apiEnvPath = Join-Path $PSScriptRoot '..\\apps\\api\\.env'
 $apiEnv | Set-Content -Path $apiEnvPath -Encoding UTF8
@@ -104,5 +72,3 @@ $deployVarsPath = Join-Path $PSScriptRoot 'deploy-vars.cmd'
 ) | Set-Content -Path $deployVarsPath -Encoding ASCII
 
 Write-Host '[env] Generated apps/api/.env and apps/admin/.env'
-Write-Host "[totp] Secret: $TOTP_SECRET"
-Write-Host "[totp] Otpauth URL: $OtpUrl"

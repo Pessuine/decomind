@@ -6,9 +6,6 @@
         <n-form-item label="后台口令">
           <n-input v-model:value="password" type="password" placeholder="输入部署时设定的口令" />
         </n-form-item>
-        <n-form-item label="动态验证码">
-          <n-input v-model:value="totp" placeholder="来自 TOTP 应用的 6 位数字" />
-        </n-form-item>
         <div v-if="auth.error" class="error">{{ auth.error }}</div>
         <n-button type="primary" :loading="auth.loading" attr-type="submit" block>
           登录
@@ -27,10 +24,9 @@ import { NForm, NFormItem, NInput, NButton } from 'naive-ui';
 const router = useRouter();
 const auth = useAuthStore();
 const password = ref('');
-const totp = ref('');
 
 const submit = async () => {
-  await auth.login({ password: password.value, totp: totp.value });
+  await auth.login({ password: password.value });
   router.push('/');
 };
 </script>
