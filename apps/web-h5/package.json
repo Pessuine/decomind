@@ -1,0 +1,11 @@
+{
+  "name": "@decomind/web-h5",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"Run H5 dev server via Vite (TODO)\"",
+    "build": "echo \"Skipping web-h5 build (placeholder)\"",
+    "lint": "echo \"No lint configured yet\"",
+    "test": "echo \"No tests yet\""
+  }
+}
