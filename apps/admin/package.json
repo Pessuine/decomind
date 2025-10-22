@@ -1,0 +1,14 @@
+{
+  "name": "@decomind/admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"Run admin dev server via Vite (TODO)\"",
+    "build": "echo \"Skipping admin build (placeholder)\"",
+    "lint": "echo \"No lint configured yet\"",
+    "serve": "node ./serve.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
