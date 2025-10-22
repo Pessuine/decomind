@@ -1,0 +1,17 @@
+{
+  "name": "decompo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace apps/web-h5 -- --mode production && npm run build --workspace apps/admin -- --mode production",
+    "build:api": "npm run build --workspace apps/api",
+    "lint": "npm run lint --workspace apps/api"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

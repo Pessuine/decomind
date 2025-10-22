@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "baseUrl": "src",
+    "paths": {
+      "@decompo/shared-utils": ["../../packages/shared-utils/src"],
+      "@decompo/shared-schemas": ["../../packages/shared-schemas/src"]
+    }
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/shared-utils" },
+    { "path": "../../packages/shared-schemas" }
+  ]
+}
