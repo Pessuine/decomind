@@ -1,0 +1,13 @@
+{
+  "name": "decompo",
+  "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/admin",
+    "apps/web-h5",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "echo 'use npm run build in each workspace'"
+  }
+}
