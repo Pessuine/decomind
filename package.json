@@ -1,0 +1,36 @@
+{
+  "name": "decompo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build:packages && npm run build:api && npm run build:web && npm run build:admin",
+    "build:packages": "npm --workspace packages/shared run build && npm --workspace packages/config run build && npm --workspace packages/database run build",
+    "build:api": "npm --workspace apps/api run build",
+    "build:web": "npm --workspace apps/web run build",
+    "build:admin": "npm --workspace apps/admin run build",
+    "dev:api": "npm --workspace apps/api run dev",
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:admin": "npm --workspace apps/admin run dev",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "db:migrate": "npm --workspace packages/database run migrate",
+    "db:generate": "npm --workspace packages/database run generate",
+    "db:seed": "npm --workspace packages/database run seed",
+    "start:prod": "npm --workspace apps/api run start:prod"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  }
+}

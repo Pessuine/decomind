@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model RequestLog {
+  id        String   @id @default(cuid())
+  method    String
+  path      String
+  status    Int
+  summary   String
+  ip        String
+  host      String
+  requestId String
+  createdAt DateTime @default(now())
+}
+
+model AiCall {
+  id              String   @id @default(cuid())
+  modelSettingId  String
+  promptVersionId String?
+  requestPayload  Json
+  responsePayload Json?
+  success         Boolean
+  consentId       String?
+  createdAt       DateTime @default(now())
+
+  modelSetting ModelSetting @relation(fields: [modelSettingId], references: [id])
+  promptVersion PromptVersion? @relation(fields: [promptVersionId], references: [id])
+  consent Consent? @relation(fields: [consentId], references: [id])
+}
+
+model Prompt {
+  id             String          @id @default(cuid())
+  name           String          @unique
+  description    String
+  activeVersionId String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  versions       PromptVersion[]
+
+  activeVersion PromptVersion? @relation("ActivePromptVersion", fields: [activeVersionId], references: [id])
+}
+
+model PromptVersion {
+  id        String   @id @default(cuid())
+  promptId  String
+  content   String
+  createdAt DateTime @default(now())
+  createdBy String   @default("system")
+
+  prompt Prompt @relation(fields: [promptId], references: [id])
+  aiCalls AiCall[]
+}
+
+model ModelSetting {
+  id             String   @id @default(cuid())
+  name           String
+  baseUrl        String
+  apiKeyEncrypted String
+  model          String
+  temperature    Float    @default(0.6)
+  isActive       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  aiCalls AiCall[]
+}
+
+model SysConfig {
+  key   String @id
+  value String
+  updatedAt DateTime @updatedAt
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String?
+  sessionId String?
+  rating    Int?
+  message   String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model Consent {
+  id        String   @id @default(cuid())
+  userId    String
+  accepted  Boolean
+  metadata  Json?
+  createdAt DateTime @default(now())
+  aiCalls   AiCall[]
+}
