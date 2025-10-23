@@ -1,0 +1,23 @@
+{
+  "name": "database",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "generate": "prisma generate",
+    "migrate": "prisma migrate deploy",
+    "migrate:dev": "prisma migrate dev",
+    "seed": "ts-node-esm src/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "ts-node": "^10.9.1",
+    "config": "0.1.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.7.0",
+    "@types/node": "^20.10.5"
+  }
+}
